@@ -12,7 +12,7 @@
 char **cmd_split(char *cmd)
 {
 	int i = 1;
-	char *command[strlen(cmd)];
+	char **command = calloc(sizeof(char), strlen(cmd));
 	command[0] = strtok(cmd, " ");
 		while(command[i])
 		{
@@ -25,8 +25,33 @@ char **cmd_split(char *cmd)
 
 int main(void)
 {
-	char str[] = "ls ~/ -al\n";
-	char **res = cmd_split(str);
-	printf("%s", res[0]);
-	return (0);
+	int index = 0, n_chars;
+	pid_t pid;
+	pid_t id = getpid();
+	char *buffer;
+	size_t buffer_size;
+	
+	while (index < 5)
+	{
+		write(STDIN_FILENO, "[dias@Archiso]~$: ", 19);
+
+		n_chars = getline(&buffer, &buffer_size, stdin);
+		char *cmd = strtok(buffer, " \t\n");
+		char *arguments[] = {cmd};
+		printf("%s\n", cmd);
+		printf("%s\n", arguments[0]);
+		
+			pid = fork();
+		if (pid == -1)
+		{
+			puts("Error forking !\n");
+			exit(EXIT_FAILURE);
+		}
+		if (pid == 0)
+			if (execve(arguments[0], arguments, NULL) == -1)
+				perror("Error\n");
+		index++;
+	}
+	wait(&pid);
+		return (0);
 }
