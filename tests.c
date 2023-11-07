@@ -9,49 +9,88 @@
 #include <errno.h>
 #include <fcntl.h>
 
-char **cmd_split(char *cmd)
+struct  stat st;
+
+
+void find_file(char *file)
 {
-	int i = 1;
-	char **command = calloc(sizeof(char), strlen(cmd));
-	command[0] = strtok(cmd, " ");
-		while(command[i])
-		{
-			command[i] = strtok(NULL, " ");
-			i++;
-		}
-	return (command);
+	if (stat(file, &st) == 0)
+		printf("%s: FOUND\n", file);
+	else
+		printf("%s: NOT FOUND\n", file);
+	
 }
 /////////////////////////////////////////////////
 
+
+char **cmd_split(char *str)
+{
+	int i = 0;
+	char **splited = malloc((strlen(str) + 1) * sizeof(char*));
+	char *token = strtok(str, " ");
+        while (token)
+        {
+            splited[i] = token;
+            token = strtok(NULL, " ");
+            i++;
+        }
+        splited[i] = NULL;
+		return(splited);
+}
+
+/**
+ * _getenv - gets the value of a given env_var
+ * @name: variable name
+ * Return: Pointer to its value
+*/
+char *_getenv(const char *name)
+{
+    int i = 0;
+    char **envp;
+    while (envp[i])
+    {
+        if (strncmp(envp[i], name, strlen(name)) == 0)
+        {
+            return ((strstr(envp[i], "=")) + 1);
+            break;
+        }
+        i++;
+    }
+}
+
 int main(void)
 {
-	int index = 0, n_chars;
-	pid_t pid;
-	pid_t id = getpid();
-	char *buffer;
-	size_t buffer_size;
-	
-	while (index < 5)
+	int i  = 0;
+	char *str = NULL;
+	size_t strsize;
+	int nums = getline(&str,&strsize, stdin);
+	if (nums = -1)
+		exit(EXIT_FAILURE);
+	find_file("/bin/ls");
+	find_file("ls");
+	find_file("/bin/clear");
+	char **test = (char **)malloc(sizeof(char *) * strlen(str) + 1);
+	if (test == NULL)
+		perror("ERROR ALLOCATING !");
+		exit(EXIT_FAILURE);
+	test = cmd_split(str);
+	free(str);
+	/** 
+	  	while(test[i])
+	  	{
+	 		 printf("%s\n", test[i]);
+	   		i++;
+	  	}
+	 */
+	//printf("%s\n", getenv("PWD"));
+	//printf("%s\n", _getenv("PWD"));
+	while (test[i])
 	{
-		write(STDIN_FILENO, "[dias@Archiso]~$: ", 19);
-
-		n_chars = getline(&buffer, &buffer_size, stdin);
-		char *cmd = strtok(buffer, " \t\n");
-		char *arguments[] = {cmd};
-		printf("%s\n", cmd);
-		printf("%s\n", arguments[0]);
-		
-			pid = fork();
-		if (pid == -1)
-		{
-			puts("Error forking !\n");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-			if (execve(arguments[0], arguments, NULL) == -1)
-				perror("Error\n");
-		index++;
+		free(test[i]);
+		test[i] = NULL;
+		i++;
 	}
-	wait(&pid);
+	free(test);
+	test = NULL;
 		return (0);
 }
