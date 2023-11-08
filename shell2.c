@@ -12,6 +12,19 @@
 #define BUFF_NUM 0
 
 /**
+ * handle_command - command into pathname
+ * @cmd: command to transform
+ * Return: new command
+ * */
+void handle_command(char *cmd)
+{
+    if (strstr(cmd, "/bin/ls") == NULL)
+        return;
+    else
+        cmd = strcat("/bin/ls", cmd);
+}
+
+/**
  * _free_t - free a 2D array
  * @arr: array to free;
 */
@@ -37,19 +50,19 @@ char *get_line(void)
     char *buffer = NULL;
     size_t buffer_size;
     int num_of_chars;
-    if (isatty(STDIN_FILENO) == 1)
+        if (isatty(STDIN_FILENO) == 1)
         write(STDOUT_FILENO, "[yassine_dias@shell]: ~$ ", 26);
-    num_of_chars = getline(&buffer, &buffer_size, stdin);
-    buffer[num_of_chars - 1] = '\0';
-    if (num_of_chars == -1)
+        num_of_chars = getline(&buffer, &buffer_size, stdin);
+        if (num_of_chars == -1)
             {
                 if(isatty(STDIN_FILENO) == 1)
                     write(STDOUT_FILENO, "\n", 2);
                 free(buffer);
                 return (NULL);
             }
-    return (buffer);
-    free(buffer);
+        buffer[num_of_chars - 1] = '\0';
+        return (buffer);
+        free(buffer);
 }
 
 /**
@@ -60,19 +73,47 @@ char *get_line(void)
 
 char ** cmd_split(char *str)
 {
-	int i = 0;
-    char **command = calloc(sizeof(char*), strlen(str) + 1);
-	char *token = strtok(str, " ");
-        while (token)
-        {
-            command[i] = token;
-            token = strtok(NULL, " ");
-            i++;
-        }
-        command[i] = NULL;
-        return (command);
+	char *token = NULL;
+    char *dup = NULL;
+    char **command = NULL;
+    int i = 0, count = 0;
+    dup = strdup(str);
+    token = strtok(dup, " \t");
+    while (token)
+    {
+        
+    }
+    
+    
 }
 
+/**
+ * exec - Function to execute one command
+ * @command: array of strings
+ * @argv: argv
+ * Return: exit status
+*/
+int exec(char **command,const char **argv, char **envp)
+{
+    pid_t pid;
+    int status;
+    pid = fork();
+    if (pid == 0)
+    {
+        if (execve(command[0], command, envp) == -1)
+        {
+            perror(argv[0]);
+            _free_t(command);
+            exit(status);
+        }
+    }
+    else
+    {
+        wait(&pid);
+        _free_t(command);
+    }
+    return (status);
+}
 
 /**
  * main - main function
@@ -96,20 +137,7 @@ int main(int argc, char const **argv, char **envp)
             if (argm == NULL)
                 return (status);
             command = cmd_split(argm);
-            if (command == NULL)
-                exit(status);
-            pid = fork();
-            if (pid == 0)
-            {
-                if (execve(argm, command, envp) == -1)
-                {
-                    perror("ERROR");
-                }
-                _free_t(command);
-            }
-            wait(&pid);
-            free(argm);
-            free(command);
+            exec(command, argv, envp);
         }
             return 0;
 }
