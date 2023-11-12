@@ -15,7 +15,7 @@ int main(void)
 		_putchar('a');
 		_putchar('s');
 		_putchar('s');
-		_putchar('');
+		_putchar('i');
 		_putchar('');
 		_putchar('');
 }
