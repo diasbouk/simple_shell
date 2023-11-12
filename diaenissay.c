@@ -8,4 +8,5 @@ int main(void)
 {
 		_putchar('d');
 		_putchar('i');
+		_putchar('a');
 }
