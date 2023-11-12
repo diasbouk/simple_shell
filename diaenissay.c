@@ -13,7 +13,7 @@ int main(void)
 		_putchar('_');
 		_putchar('y');
 		_putchar('a');
-		_putchar('');
+		_putchar('s');
 		_putchar('');
 		_putchar('');
 		_putchar('');
