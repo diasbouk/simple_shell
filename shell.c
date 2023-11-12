@@ -130,3 +130,43 @@ int main(int ac, char **av, char **env)
        }
        
 }
+
+
+
+char ** cmd_split(char *str)
+{
+	char *token = NULL, *temp = NULL;
+    char **command = NULL;
+    int count = 0, i = 0;
+    if (!str)
+        return (NULL);
+    temp = strdup(str);
+    token = strtok(temp, DELIM);
+    while (token)
+    {
+        count++;
+        token = strtok(NULL, DELIM); 
+    }
+    free(temp);
+    temp = NULL;
+
+    command = malloc(sizeof(char *) * (count + 1));
+    if (!command)
+    {
+        return (NULL);
+        free(str);
+        str = NULL;
+    }
+    token = strtok(str, DELIM);
+
+    while (token)
+    {
+        command[i] = token;
+        token = strtok(NULL, DELIM); 
+        i++;
+    }
+    command[i] = NULL;
+    return(command);
+    free(str);
+    str = NULL;
+}

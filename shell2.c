@@ -12,17 +12,139 @@
 #define BUFF_NUM 0
 #define DELIM " \t\n"
 
+struct stat st;
+
+
+/**
+ * *_strcpy - cp
+ * @dest: dest
+ * @src: string
+ *
+ * Return: the pointer to dest
+ */
+char *_strcpy(char *dest, char *src)
+{
+	int rtg, n;
+		rtg = 0;
+		while (src[rtg] != '\0')
+		{
+			rtg++;
+		}
+
+		for (n = 0; n < rtg; n++)
+		{
+			dest[n] = src[n];
+		}
+		dest[n] = '\0';
+
+			return (dest);
+}
+/**
+ * _strlen - check the code
+ * @s: parameter string
+ * Return: Always 0.
+ */
+int _strlen(char *s)
+{
+	int length;
+		length = 0;
+		while (s[length])
+		{
+			length++;
+		}
+		return (length);
+}
+
+
+/**
+ * _strstr - find needle in haystack
+ * @haystack: String that contains substring
+ * @needle: Subrstring to be located .
+ * Return: pointer to needle if its found
+ * NULL if not .
+ */
+char *_strstr(char *haystack, char *needle)
+{
+while (*haystack != '\0')
+{
+while ((*haystack == *needle && *needle != '\0') || !*needle)
+{
+return (haystack);
+}
+haystack++;
+}
+if (*needle == '\0')
+return (haystack);
+return (0);
+}
+
+/**
+ * _getenv - gets the value of a given env_var
+ * @name: variable name
+ * Return: Pointer to its value
+*/
+char *_getenv(const char *name)
+{
+    int i = 0;
+    extern char **environ;
+    while (environ[i])
+    {
+        if (strncmp(environ[i], name, strlen(name)) == 0)
+        {
+            return ((strstr(environ[i], "=")) + 1);
+            //break;
+        }
+        i++;
+    }
+}
+
+
 /**
  * handle_command - command into pathname
  * @cmd: command to transform
  * Return: new command
  * */
-void handle_command(char *cmd)
+char * handle_command(char *cmd)
 {
-    if (strstr(cmd, "/bin/ls") == NULL)
-        return;
-    else
-        cmd = strcat("/bin/ls", cmd);
+    char *token;
+    char *path;
+    char *temp;
+
+    if (stat(cmd, &st) == 0)
+    {
+        return(cmd);
+    }
+
+    
+    token = strtok(_getenv("PATH"), ":");
+    while (token)
+    {
+        char *full_cmd = malloc(sizeof(char) * (strlen(cmd) + strlen(token)));
+        strcat(full_cmd, token);
+        strcat(full_cmd, "/");
+        strcat(full_cmd, cmd);
+        temp = strdup(full_cmd);
+        path = _strstr(temp, "/");
+        if (stat(path, &st) == 0)
+        {
+            free(full_cmd);
+            fflush(STDIN_FILENO);
+            return (path);
+            free(temp);
+            break;
+        }
+        else
+        {
+            path = NULL;
+        }
+        token = strtok(NULL, ":");
+        free(full_cmd);
+    }
+    free(temp);
+    free(cmd);
+    if (path == NULL)
+        return (NULL);
+    
 }
 
 /**
@@ -34,14 +156,14 @@ void _free_t(char **arr)
     int i = 0;
     if (!arr)
         return;
-    while (arr[i])
+    while (arr[i] != NULL)
     {
         free(arr[i]);
         arr[i] = NULL;
         i++;
     }
-    free(arr);   
-    arr = NULL; 
+    free(arr);
+    arr = NULL;
 }
 
 /**
@@ -61,11 +183,14 @@ char *get_line(void)
         if (num_of_chars == -1)
             {
                 free(buffer);
-                 return (NULL);
+                buffer = NULL;
+                fflush(STDIN_FILENO);
+                return (NULL);
+                
             }
         buffer[num_of_chars - 1] = '\0';
+        fflush(STDIN_FILENO);
         return (buffer);
-        free(buffer);
 }
 
 /**
@@ -76,29 +201,36 @@ char *get_line(void)
 
 char ** cmd_split(char *str)
 {
-	char *token = NULL;
-    char *dup = NULL;
-    char **command = NULL;
-    int i = 0, count = 0;
-    dup = strdup(str);
-    token = strtok(dup, DELIM);
-    while (token)
+	int i = 0, count = 0;
+    char  *temp = malloc(sizeof(char) * (strlen(str) + 1));
+	char **splited;
+	char *token;
+    _strcpy(temp, str);
+    token = strtok(temp, DELIM);
+    while (token != NULL)
     {
         count++;
         token = strtok(NULL, DELIM);
     }
-    free(dup);
-    command = malloc(sizeof(char *) * count + 1);
+
+    splited = malloc(sizeof(char *) * (count + 1));
     token = strtok(str, DELIM);
-    while (token)
-    {
-        command[i] = token;
-        token = strtok(NULL, DELIM);
-        i++;
-    }
-    command[i] = NULL;
-    return(command);
-    free(str);
+        while (token)
+        {
+            splited[i] = token;
+            token = strtok(NULL, " ");
+            i++;
+        }
+        splited[i] = NULL;
+
+		return(splited);
+        // no free after return
+        // put free before
+        free(splited);
+        free(str);
+        str = NULL;
+        free(temp);
+        temp = NULL;
 }
 
 /**
@@ -115,16 +247,17 @@ int exec(char **command,const char **argv, char **envp)
     if (forked == 0)
     {
         if (execve(command[0], command, envp) == -1)
-        {
-            perror(argv[0]);
-             _free_t(command);
-             exit(0);
+        {   
+            perror(command[0]);
+            free(command);
+            command = NULL;
+            exit(0);
         }
     }
     else
     {
-        waitpid(forked, &status, 0);
-        _free_t(command);
+        waitpid(forked, &status, 0);   
+        free(command);     
     }
     return (WEXITSTATUS(status));
 }
@@ -156,7 +289,28 @@ int main(int argc, char const **argv, char **envp)
             command = cmd_split(argm);
             if (command == NULL)
                 continue;
-            status = exec(command, argv, envp);
+            command[0] = handle_command(command[0]);
+
+            //status = exec(command, argv, envp);
+
+            pid_t forked;
+            int status;
+            forked = fork();
+            if (forked == 0)
+            {
+                if (execve(command[0], command, envp) == -1)
+                {   
+                    perror(command[0]);
+                    free(command);
+                    command = NULL;
+                    exit(0);
+                }
+            }
+            else
+            {
+                waitpid(forked, &status, 0);   
+                free(command);     
+            }
         }
             return 0;
 }

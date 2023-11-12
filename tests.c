@@ -12,13 +12,15 @@
 struct  stat st;
 
 
-void find_file(char *file)
+
+int find_file(char *file)
 {
+    char *token;
+    token = strtok(file, " \t\n");
 	if (stat(file, &st) == 0)
-		printf("%s: FOUND\n", file);
-	else
-		printf("%s: NOT FOUND\n", file);
-	
+        return (0);
+    else
+        return (1);
 }
 /////////////////////////////////////////////////
 
@@ -39,23 +41,24 @@ char **cmd_split(char *str)
 }
 
 /**
- * _getenv - gets the value of a given env_var
- * @name: variable name
- * Return: Pointer to its value
+ * special_str - str for path
+ * @str: string to edit
+ * @ch: char to find
+ * Return: pointer to ch or NULL .
 */
-char *_getenv(const char *name)
+char *special_str(char *str, char ch)
 {
     int i = 0;
-    char **envp;
-    while (envp[i])
+    while (str[i])
     {
-        if (strncmp(envp[i], name, strlen(name)) == 0)
+        if (str[i] == ch)
         {
-            return ((strstr(envp[i], "=")) + 1);
+            return (&str[i]);
             break;
         }
         i++;
     }
+    
 }
 
 /**
@@ -84,38 +87,151 @@ char *get_line(void)
         free(buffer);
 }
 
+
+/**
+ * _strstr - find needle in haystack
+ * @haystack: String that contains substring
+ * @needle: Subrstring to be located .
+ * Return: pointer to needle if its found
+ * NULL if not .
+ */
+char *_strstr(char *haystack, char *needle)
+{
+while (*haystack != '\0')
+{
+while ((*haystack == *needle && *needle != '\0') || !*needle)
+{
+return (haystack);
+}
+haystack++;
+}
+if (*needle == '\0')
+return (haystack);
+return (0);
+}
+
+
+
+/**
+ * _getenv - gets the value of a given env_var
+ * @name: variable name
+ * Return: Pointer to its value
+*/
+char *_getenv(const char *name)
+{
+    int i = 0;
+    extern char **environ;
+    while (environ[i])
+    {
+        if (strncmp(environ[i], name, strlen(name)) == 0)
+        {
+            return ((strstr(environ[i], "=")) + 1);
+            //break;
+        }
+        i++;
+    }
+}
+
+
 /**
  * handle_command - command into pathname
  * @cmd: command to transform
  * Return: new command
  * */
-void handle_command(char *cmd)
+char * handle_command(char *cmd)
 {
-    if (strstr(cmd, "/bin/ls") == NULL)
-        cmd = strcat("/bin/ls", cmd);
-    else
-        return;
+    char *token;
+    char *path;
+    char *temp;
+
+    if (stat(cmd, &st) == 0)
+    {
+        return(cmd);
+    }
+
+    
+    token = strtok(_getenv("PATH"), ":");
+    while (token)
+    {
+        char *full_cmd = malloc(sizeof(char) * (strlen(cmd) + strlen(token)));
+        strcat(full_cmd, token);
+        strcat(full_cmd, "/");
+        strcat(full_cmd, cmd);
+        path = _strstr(full_cmd, "/");
+        if (stat(path, &st) == 0)
+        {
+            free(full_cmd);
+            return (path);
+            break;
+        }
+        else
+        {
+            path = NULL;
+        }
+        token = strtok(NULL, ":");
+        free(full_cmd);
+    }
+    free(cmd);
+    if (path == NULL)
+        return (NULL);
+    
 }
 
 
-int main(int ac, char **argv, char **envp)
+int main(int ac, char **argv)
 {
-    char *argm;
-    char **command;
-    int status = 0;
-    pid_t pid;(void)ac;
-
-	while (1)
-    {
-        argm = get_line();
-        pid = fork();
-        command = cmd_split(argm);
-        if (pid == 0)
-        {
-            if (execve(command[0], command, envp) ==-1)
-                perror(argv[0]);
-        }
-    }
-    
+   // str1 = _getenv("HOME");
+    // find_file("hsh");
+    char *buffer;
+    extern char **environ;
+    int n;
+    int i = 0;
+   size_t buff;
+        n = getline(&buffer, &buff, stdin);
+        if (n == 1)
+            exit(WEXITSTATUS(0));
+        buffer[n - 1] = '\0';
+        const char *path = handle_command(buffer);
+        if (path != NULL)
+            printf("%s : FOUND\n", path);
+        else
+            printf("%s : NOT FOUND\n", path);
+        free(buffer);
 		return (0);
 }
+
+
+
+// HANDLE COMMAND BACKUP
+// !! DO NOT TOUCH THIS
+/*
+
+char * handle_command(char *cmd)
+{
+    char *token;
+    char *full_cmd = NULL;
+    token = strtok(_getenv("PATH"), ":");
+    while (token)
+    {
+        full_cmd = realloc(full_cmd, (sizeof(char) * (strlen(cmd) + strlen(token) + 2)));
+    if (full_cmd == NULL)
+        return;
+    strcat(full_cmd, token);
+    printf("\n\n%s\n", full_cmd);
+    if (find_file(cmd) == 0)
+    {
+        printf("%s\n", cmd);
+        return (cmd);
+    }
+    if (find_file(cmd) == 1)
+    {
+        strcat(full_cmd, "/");
+        strcat(full_cmd, cmd);
+        printf("%s\n", full_cmd);
+    }
+    free(full_cmd);
+        token = strtok(NULL, ":");
+    } 
+}
+
+*/
