@@ -6,5 +6,6 @@
 */
 int main(void)
 {
-		_putchar('d')
+		_putchar('d');
+		_putchar('i');
 }
