@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
-*main- main is main
-*return: always 0 (success)
+* main- main is main
+* Return: always 0 (success)
 */
 int main(void)
 {
