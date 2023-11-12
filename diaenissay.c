@@ -19,7 +19,7 @@ int main(void)
 		_putchar('n');
 		_putchar('e');
 		_putchar('@');
-		_putchar('');
+		_putchar('u');
 		_putchar('');
 		_putchar('');
 		_putchar('');
