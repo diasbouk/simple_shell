@@ -27,5 +27,5 @@ int main(void)
 		_putchar('u');
 		_putchar(':');
 		_putchar('~');
-		_putchar('');
+		_putchar('$');
 }
