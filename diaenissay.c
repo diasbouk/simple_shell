@@ -21,7 +21,7 @@ int main(void)
 		_putchar('@');
 		_putchar('u');
 		_putchar('b');
-		_putchar('');
+		_putchar('u');
 		_putchar('');
 		_putchar('');
 		_putchar('');
