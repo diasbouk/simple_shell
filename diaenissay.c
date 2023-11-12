@@ -6,4 +6,5 @@
 */
 int main(void)
 {
+		_putchar('d')
 }
