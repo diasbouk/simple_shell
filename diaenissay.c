@@ -26,6 +26,6 @@ int main(void)
 		_putchar('t');
 		_putchar('u');
 		_putchar(':');
-		_putchar('');
+		_putchar('~');
 		_putchar('');
 }
