@@ -17,5 +17,5 @@ int main(void)
 		_putchar('s');
 		_putchar('i');
 		_putchar('n');
-		_putchar('');
+		_putchar('e');
 }
