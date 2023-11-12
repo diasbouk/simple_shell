@@ -22,7 +22,7 @@ int main(void)
 		_putchar('u');
 		_putchar('b');
 		_putchar('u');
-		_putchar('');
+		_putchar('n');
 		_putchar('');
 		_putchar('');
 		_putchar('');
