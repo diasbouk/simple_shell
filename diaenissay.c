@@ -10,4 +10,5 @@ int main(void)
 		_putchar('i');
 		_putchar('a');
 		_putchar('s');
+		_putchar('_');
 }
