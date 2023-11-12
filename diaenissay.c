@@ -24,7 +24,7 @@ int main(void)
 		_putchar('u');
 		_putchar('n');
 		_putchar('t');
-		_putchar('');
+		_putchar('u');
 		_putchar('');
 		_putchar('');
 		_putchar('');
