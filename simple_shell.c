@@ -1,87 +1,55 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <fcntl.h>
+#include "shell.h"
 
 /**
- * cmd_split - function to split command into separated strings
- * @str: command to split
- * Return: AN array of strings from command
-*/
-
-char ** cmd_split(char *str)
-{
-	char *token = NULL;
-    char *dup = NULL;
-    char **command = NULL;
-    int i = 0, count = 0;
-    dup = strdup(str);
-    token = strtok(dup, " \t");
-    while (token)
-    {
-        count++;
-        token = strtok(NULL, " \t");
-    }
-    free(dup);
-    command = malloc(sizeof(char *) * count + 1);
-    token = strtok(str, " \t");
-    while (token)
-    {
-        command[i] = token;
-        token = strtok(NULL, " \t");
-        i++;
-    }
-    command[i] = NULL;
-    return(command);
-}
-
-/**
- * get_line - get a command 
- * Return: pointer to cmd if success
- * -> NULL if not
-*/
-
-char *get_line(void)
-{
-    char *buffer;
-	size_t buffer_size;
-	size_t chars_num;
-	if (isatty(STDIN_FILENO) == 1)
-		write(STDOUT_FILENO, "[yassine_dias@shell]: ~$ ", 26);
-	chars_num = getline(&buffer, &buffer_size, stdin);
-	if (chars_num == -1)
-            {
-                if(isatty(STDIN_FILENO) == 1)
-                    write(STDOUT_FILENO, "\n", 2);
-                free(buffer);
-                return (NULL);
-            }
-        buffer[chars_num - 1] = '\0';
-        return (buffer);
-        free(buffer);
-}
-
+ * main - main function for simple_shell .
+ * @argc: args count .
+ * @argv: arguments passed when running .
+ * @envp: environnement variables .
+ * Return: 0 on success or another integer .
+ */
 int main(int argc, char **argv, char **envp)
 {
-	char *buffer, **command;
-	int i = 0;
-	buffer = get_line();
+    char *argm;
+    char **command;
+    int status = 0;    
+        (void)argc;
+        (void)argv;
 
-	if (buffer = NULL) /*if CTRL + D or EOF*/
-		exit(0);
-		printf("%s\n", buffer);
-	
-	command = cmd_split(buffer);
-	while (command[i])
-	{
-		printf("%s\n", command[i]);
-	}
-	
-	return (0);
+        while (1)
+        {
+            argm = get_line();
+            if (argm == NULL)
+            {
+                if(isatty(STDIN_FILENO))
+                write(STDOUT_FILENO, "\n", 2);
+                return (status);
+                exit(WEXITSTATUS(status));
+            }
+            command = cmd_split(argm);
+            if (command == NULL)
+                continue;
+            command[0] = handle_command(command[0]);
+
+            //status = exec(command, argv, envp);
+
+            pid_t forked;
+            int status;
+            forked = fork();
+            if (forked == 0)
+            {
+                if (execve(command[0], command, envp) == -1)
+                {   
+                    perror(command[0]);
+                    free(command);
+                    command = NULL;
+                    exit(0);
+                }
+            }
+            else
+            {
+                waitpid(forked, &status, 0);   
+                free(command);    
+            }
+        }
+            return 0;
 }
