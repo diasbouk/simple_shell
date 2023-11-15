@@ -27,7 +27,12 @@ int main(int argc, char **argv, char **envp)
             }
             command = cmd_split(argm);
             if (command == NULL)
-                continue;
+            {
+              //fflush(STDIN_FILENO);
+              continue;
+            }
+            if (strcmp(command[0], "exit") == 0)
+              exit(0);
             command[0] = handle_command(command[0]);
 
             //status = exec(command, argv, envp);
