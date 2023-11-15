@@ -34,7 +34,10 @@ int main(int argc, char **argv, char **envp)
               continue;
             }
             if (strcmp(command[0], "exit") == 0)
+            {
+              write(STDIN_FILENO, "exit\n", 6);
               exit(0);
+            }
             command[0] = handle_command(command[0]);
             
             forked = fork();
