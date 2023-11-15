@@ -36,7 +36,13 @@ int main(int argc, char **argv, char **envp)
             if (strcmp(command[0], "exit") == 0)
             {
               write(STDIN_FILENO, "exit\n", 6);
-              exit(0);
+            if(command[1])
+            {
+                status = atoi(command[1]);
+                exit(status);
+            }
+            else
+                exit(0);
             }
             command[0] = handle_command(command[0]);
             
