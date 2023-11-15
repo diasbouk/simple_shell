@@ -14,8 +14,8 @@ char *_getenv(const char *name)
         if (strncmp(environ[i], name, strlen(name)) == 0)
         {
             return ((strstr(environ[i], "=")) + 1);
-            //break;
         }
         i++;
     }
+    return (NULL);
 }

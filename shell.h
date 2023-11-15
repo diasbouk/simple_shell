@@ -16,7 +16,6 @@
 #define DELIM " \t\n"
 
 
-//struct stat st;
 
 char **cmd_split(char *cmd);
 char *_strcpy(char *dest, char *src);
@@ -26,5 +25,5 @@ char *_getenv(const char *name);
 char * handle_command(char *cmd);
 void _free_t(char **arr);
 char *get_line(void);
-int exec(char **command,const char **argv, char **envp);
+int _exec_it(char **command, char **envp);
 #endif

@@ -6,7 +6,7 @@
  * @argv: argv
  * Return: exit status
 */
-int exec(char **command,const char **argv, char **envp)
+int _exec_it(char **command, char **envp)
 {
     pid_t forked;
     int status;

@@ -1,33 +1,33 @@
-#include "main.h"
+#include "shell.h"
 
 /**
 * main- main is main
 * Return: always 0 (success)
 */
-int main(void)
+int yass(void)
 {
-		_putchar('d');
-		_putchar('i');
-		_putchar('a');
-		_putchar('s');
-		_putchar('_');
-		_putchar('y');
-		_putchar('a');
-		_putchar('s');
-		_putchar('s');
-		_putchar('i');
-		_putchar('n');
-		_putchar('e');
-		_putchar('@');
-		_putchar('u');
-		_putchar('b');
-		_putchar('u');
-		_putchar('n');
-		_putchar('t');
-		_putchar('u');
-		_putchar(':');
-		_putchar('~');
-		_putchar('$');
-		_putchar('\n');
+		putchar('d');
+		putchar('i');
+		putchar('a');
+		putchar('s');
+		putchar('_');
+		putchar('y');
+		putchar('a');
+		putchar('s');
+		putchar('s');
+		putchar('i');
+		putchar('n');
+		putchar('e');
+		putchar('@');
+		putchar('u');
+		putchar('b');
+		putchar('u');
+		putchar('n');
+		putchar('t');
+		putchar('u');
+		putchar(':');
+		putchar('~');
+		putchar('$');
+		putchar('\n');
 	return (0);
 }

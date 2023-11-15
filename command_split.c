@@ -31,8 +31,6 @@ char ** cmd_split(char *str)
         splited[i] = NULL;
 
 		return(splited);
-        // no free after return
-        // put free before
         free(splited);
         free(str);
         str = NULL;

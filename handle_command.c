@@ -9,46 +9,36 @@ char * handle_command(char *cmd)
 {
   struct stat st;    
     char *token;
-    char *path;
-    char *temp;
+    char *path = _getenv("PATH");
+    char *full_cmd = NULL;
+    char *clone;
 
-    if (cmd == NULL)
-        return (NULL); 
-
-    if (stat(cmd, &st) == 0)
-    {
+     if (stat(cmd, &st) == 0)
         return(cmd);
-    }
 
-    
-    token = strtok(_getenv("PATH"), ":");
+    token = strtok(path, ":");
     while (token)
     {
-        char *full_cmd = malloc(sizeof(char) * (strlen(cmd) + strlen(token)));
+        full_cmd = NULL;
+        full_cmd = realloc(full_cmd, sizeof(char) * (strlen(token) + strlen(cmd) + 2));
         strcat(full_cmd, token);
         strcat(full_cmd, "/");
         strcat(full_cmd, cmd);
-        temp = strdup(full_cmd);
-        path = _strstr(temp, "/");
-        if (stat(path, &st) == 0)
+        clone = strstr(full_cmd, "/");
+        if (stat(clone, &st) == 0)
         {
-            free(full_cmd);
-            fflush(STDIN_FILENO);
-            return (path);
-            free(temp);
+            return (clone);
             break;
         }
         else
-        {
-            path = NULL;
-        }
+            clone = NULL;
         token = strtok(NULL, ":");
         free(full_cmd);
+        full_cmd = NULL;
     }
-    free(temp);
-    free(cmd);
-    if (path == NULL)
-        return (NULL);
+    if (full_cmd != NULL)
+        free(full_cmd);
+    return (NULL);
     
 }
 
