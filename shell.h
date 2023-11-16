@@ -19,7 +19,7 @@ char *_strcpy(char *dest, char *src);
 int _strlen(char *s);
 char *_strstr(char *haystack, char *needle);
 char *_getenv(const char *name);
-char * handle_command(char *cmd);
+char *handle_command(char *cmd);
 void _free_t(char **arr);
 char *get_line(void);
 int _exec_it(char **command, char **envp);
