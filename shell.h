@@ -10,13 +10,10 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
-
 #define BUFFER_SIZE 0
 #define BUFF_NUM 0
 #define DELIM " \t\n"
-
-
-
+extern char **environ;
 char **cmd_split(char *cmd);
 char *_strcpy(char *dest, char *src);
 int _strlen(char *s);
