@@ -30,7 +30,7 @@ splited = malloc(sizeof(char *) * (count + 1));
 token = strtok(str, DELIM);
 while (token)
 {
-splited[i] = strdup(token);
+splited[i] = token;
 token = strtok(NULL, " ");
 i++;
 }

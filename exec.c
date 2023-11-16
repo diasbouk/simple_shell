@@ -21,6 +21,7 @@ _free_t(command);
 command = NULL;
 exit(0);
 }
+_free_t(command);
 }
 else
 {
