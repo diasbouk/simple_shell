@@ -25,24 +25,29 @@ int main(int argc, char **argv, char **envp)
                 if(isatty(STDIN_FILENO))
                     write(STDOUT_FILENO, "\n", 2);
                 return (status);
-                exit(WEXITSTATUS(status));
             }
             command = cmd_split(argm);
             if (command == NULL)
             {
-              fflush(STDIN_FILENO);
               continue;
             }
             if (strcmp(command[0], "exit") == 0)
             {
+               
               write(STDIN_FILENO, "exit\n", 6);
             if(command[1])
             {
                 status = atoi(command[1]);
+                _free_t(command);
+                free(argm);
                 exit(status);
             }
             else
+            {
+                _free_t(command);
+                free(argm);
                 exit(0);
+            }
             }
             command[0] = handle_command(command[0]);
             

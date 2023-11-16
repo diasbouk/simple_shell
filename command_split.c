@@ -14,6 +14,13 @@ char ** cmd_split(char *str)
 	char *token;
     _strcpy(temp, str);
     token = strtok(temp, DELIM);
+    if (!token)
+    {
+        free(str);
+        str = NULL;
+        free(temp);
+        temp = NULL;
+    }
 
     while (token != NULL)
     {
@@ -35,7 +42,6 @@ char ** cmd_split(char *str)
         str = NULL;
         free(temp);
         temp = NULL;
-
 		return(splited);
         
 }
