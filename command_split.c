@@ -14,6 +14,7 @@ char ** cmd_split(char *str)
 	char *token;
     _strcpy(temp, str);
     token = strtok(temp, DELIM);
+    
     while (token != NULL)
     {
         count++;
@@ -24,7 +25,7 @@ char ** cmd_split(char *str)
     token = strtok(str, DELIM);
         while (token)
         {
-            splited[i] = token;
+            splited[i] = strdup(token);
             token = strtok(NULL, " ");
             i++;
         }

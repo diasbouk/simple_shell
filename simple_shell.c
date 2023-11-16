@@ -23,7 +23,7 @@ int main(int argc, char **argv, char **envp)
             if (argm == NULL)
             {
                 if(isatty(STDIN_FILENO))
-                write(STDOUT_FILENO, "\n", 2);
+                    write(STDOUT_FILENO, "\n", 2);
                 return (status);
                 exit(WEXITSTATUS(status));
             }
@@ -52,7 +52,7 @@ int main(int argc, char **argv, char **envp)
                 if (execve(command[0], command, envp) == -1)
                 {   
                     perror(command[0]);
-                    free(command);
+                    _free_t(command);
                     command = NULL;
                     exit(0);
                 }
@@ -60,7 +60,7 @@ int main(int argc, char **argv, char **envp)
             else
             {
                 waitpid(forked, &status, 0);   
-                free(command);    
+                _free_t(command);    
             }
         }
             return 0;
