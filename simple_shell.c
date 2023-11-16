@@ -44,8 +44,7 @@ int main(int argc, char **argv, char **envp)
             }
             else
             {
-                _free_t(command);
-                free(argm);
+                _free_t(command);   
                 exit(0);
             }
             }
