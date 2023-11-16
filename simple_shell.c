@@ -26,6 +26,7 @@ return (status);
 command = cmd_split(argm);
 if (command == NULL)
 {
+status  = 0;
 continue;
 }
 if (strcmp(command[0], "exit") == 0)
