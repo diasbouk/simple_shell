@@ -45,7 +45,7 @@ int main(int argc, char **argv, char **envp)
             else
             {
                 _free_t(command);   
-                exit(0);
+                exit(WEXITSTATUS(status));
             }
             }
             command[0] = handle_command(command[0]);
