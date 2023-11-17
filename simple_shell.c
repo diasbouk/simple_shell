@@ -44,6 +44,12 @@ _free_t(command);
 exit(WEXITSTATUS(status));
 }
 }
+if (strcmp(command[0], "env") == 0)
+{
+_free_t(command);
+print_env(envp);
+exit(WEXITSTATUS(status));
+}
 status = _exec_it(command, envp);
 }
 return (0);
