@@ -36,7 +36,6 @@ if (command[1])
 {
 status = atoi(command[1]);
 _free_t(command);
-free(argm);
 exit(status);
 }
 else
