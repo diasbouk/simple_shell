@@ -1,41 +1,44 @@
 #include "shell.h"
 
 /**
- * cmd_split - function to split command into separated strings
- * @str: command to split
- * Return: AN array of strings from command
+ * command_splitter - Function to split command argumnets
+ * @command: command enterde by user
+ * Return: An array of strings containing args . 
 */
 
-char **cmd_split(char *str)
+char **command_spiltter(char *command)
 {
-int i = 0, count = 0;
-char  *temp = malloc(sizeof(char) * (strlen(str) + 1));
-char **splited;
-char *token;
-_strcpy(temp, str);
-token = strtok(temp, DELIM);
-if (!token)
-{
-free(str);
-str = NULL;
-free(temp);
-temp = NULL;
-}
-while (token != NULL)
-{
-count++;
-token = strtok(NULL, DELIM);
-}
-splited = malloc(sizeof(char *) * (count + 1));
-token = strtok(str, DELIM);
-while (token)
-{
-splited[i] = strdup(token);
-token = strtok(NULL, " ");
-i++;
-}
-splited[i] = NULL;
-free(str), str = NULL;
-free(temp), temp = NULL;
-return (splited);
+    char *token = NULL, **full_command = NULL, *temp_cmd = NULL;
+    int i = 0, count  = 0;
+
+    temp_cmd = malloc(sizeof(char) * (_strlen(command) + 1));
+    _strcpy(temp_cmd, command);
+    token = strtok(temp_cmd, DELIM);
+    if (!token)
+    {
+        free(temp_cmd);
+        return (NULL);
+    }
+    while (token)
+    {
+        count++;
+        token = strtok(NULL, DELIM);
+    }
+    free(temp_cmd), temp_cmd = NULL;
+
+    full_command = malloc(sizeof(char *) * (count + 1));
+    token = strtok(command, DELIM);
+    if (!token)
+    {
+        free(full_command);
+        return (NULL);
+    }
+    while (token)
+    {
+        full_command[i] = strdup(token);
+        token = strtok(NULL, DELIM); 
+        i++;
+    }
+    full_command[i] = NULL;
+    return(full_command);
 }

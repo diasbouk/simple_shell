@@ -14,7 +14,7 @@
 #define BUFF_NUM 0
 #define DELIM " \t\n"
 extern char **environ;
-char **cmd_split(char *cmd);
+char **command_spiltter(char *command);
 char *_strcpy(char *dest, char *src);
 int _strlen(char *s);
 char *_strstr(char *haystack, char *needle);
