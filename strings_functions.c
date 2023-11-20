@@ -63,3 +63,15 @@ if (*needle == '\0')
 return (haystack);
 return (0);
 }
+
+
+int is_number(char *s)
+{
+	int i;
+    for (i = 0; s[i]!= '\0'; i++)
+    {
+        if (isdigit(s[i]) == 0)
+              return 0;
+    }
+    return 1;
+}

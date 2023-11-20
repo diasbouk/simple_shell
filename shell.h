@@ -24,4 +24,5 @@ void _free_t(char **arr);
 char *get_line(void);
 int _exec_it(char **command, char **envp);
 void print_env(char **envi);
+int is_number(char *s);
 #endif
