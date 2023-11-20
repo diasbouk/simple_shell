@@ -11,7 +11,7 @@ int main(int argc, char **argv, char **envp)
 {
 char *buffer = NULL, **new_args = NULL;
 size_t buffer_size;
-int num_of_chars, status = 0;
+int num_of_chars, status = 0, i = 0;
 (void)argc;
 (void)argv;
 while (1)
@@ -26,11 +26,21 @@ exit(0);
 }
 buffer[num_of_chars - 1] = '\0';
 
-if (strcmp(buffer, "exit") == 0)
+        if (strcmp(buffer, "exit") == 0)
         {
             free(buffer);
             exit(status);
         }
+        if (strcmp(buffer, "env") == 0)
+        {
+            while (environ[i])
+            {
+                puts(environ[i]);
+                i++;
+            }
+            
+        }
+
 
     new_args = command_spiltter(buffer);
     
