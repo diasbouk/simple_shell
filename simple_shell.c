@@ -26,6 +26,13 @@ free(buffer);
 exit(0);
 }
 buffer[num_of_chars - 1] = '\0';
+
+if (strcmp(buffer, "exit") == 0)
+        {
+            free(buffer);
+            exit(0);
+        }
+
 new_args = command_spiltter(buffer);
 if (new_args == NULL)
 {
