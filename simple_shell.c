@@ -36,6 +36,7 @@ buffer[num_of_chars - 1] = '\0';
             while (environ[i])
             {
                 puts(environ[i]);
+                putchar(10);
                 i++;
             }
             
