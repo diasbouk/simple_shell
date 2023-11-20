@@ -11,7 +11,7 @@ int main(int argc, char **argv, char **envp)
 {
 char *buffer = NULL, **new_args = NULL;
 size_t buffer_size;
-int num_of_chars, status = 0, i = 0;
+int num_of_chars, status = 0;
 (void)argc;
 (void)argv;
 while (1)
@@ -33,13 +33,8 @@ buffer[num_of_chars - 1] = '\0';
         }
         if (strcmp(buffer, "env") == 0)
         {
-            while (environ[i])
-            {
-                puts(environ[i]);
-                putchar(10);
-                i++;
-            }
-            
+            system("env");
+            continue;
         }
 
 
