@@ -11,8 +11,7 @@ int main(int argc, char **argv, char **envp)
 {
 char *buffer = NULL, **new_args = NULL;
 size_t buffer_size;
-int num_of_chars;
-struct stat st;
+int num_of_chars, status;
 (void)argc;
 (void)argv;
 while (1)
@@ -30,18 +29,18 @@ buffer[num_of_chars - 1] = '\0';
 if (strcmp(buffer, "exit") == 0)
         {
             free(buffer);
-            exit(0);
+            exit(status);
         }
 
-new_args = command_spiltter(buffer);
-if (new_args == NULL)
-{
-free(buffer);
-return (0);
-}
-if (stat(new_args[0], &st) != 0)
-new_args[0] = handle_command(new_args[0]);
-_exec_it(new_args, envp);
+    new_args = command_spiltter(buffer);
+    
+    if (new_args == NULL)
+    {
+        free(buffer);
+        return (0);
+    }
+        status = _exec_it(new_args, envp);
+
 }
 return (0);
 }
