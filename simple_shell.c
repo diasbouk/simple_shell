@@ -22,7 +22,7 @@ num_of_chars = getline(&buffer, &buffer_size, stdin);
 if (num_of_chars == -1)
 {
 free(buffer);
-exit(0);
+exit(status);
 }
 buffer[num_of_chars - 1] = '\0';
 
