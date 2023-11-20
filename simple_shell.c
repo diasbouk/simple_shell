@@ -43,7 +43,10 @@ buffer[num_of_chars - 1] = '\0';
     {
         if (new_args[1])
         {
-            exit(atoi(new_args[1]));
+            status = atoi(new_args[1]);
+            free(buffer);
+            _free_t(new_args);
+            exit(status);
         }
     }
     
