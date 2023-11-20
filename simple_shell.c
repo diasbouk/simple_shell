@@ -39,6 +39,16 @@ buffer[num_of_chars - 1] = '\0';
 
 
     new_args = command_spiltter(buffer);
+    if (strcmp(new_args[0], "exit") == 0)
+    {
+        if (new_args[1])
+        {
+            if (atoi(new_args[1]) < 0)
+                exit(2);
+
+            exit(atoi(new_args[1]));
+        }
+    }
     
     if (new_args == NULL)
     {
