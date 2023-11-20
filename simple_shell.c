@@ -11,7 +11,7 @@ int main(int argc, char **argv, char **envp)
 {
 char *buffer = NULL, **new_args = NULL;
 size_t buffer_size;
-int num_of_chars, status;
+int num_of_chars, status = 0;
 (void)argc;
 (void)argv;
 while (1)
