@@ -18,13 +18,3 @@ i++;
 }
 return (NULL);
 }
-
-void print_env(char **envi)
-{
-int i = 0;
-while(envi[i])
-{
-printf("%s", envi[i]);
-i++;
-}
-}
