@@ -54,7 +54,7 @@ buffer[num_of_chars - 1] = '\0';
             free(buffer);
             _free_t(new_args);
             if (status < 0)
-            exit(2);
+                exit(2);
             exit(status);
         
         }
