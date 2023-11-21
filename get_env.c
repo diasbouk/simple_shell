@@ -7,14 +7,14 @@
 */
 char *_getenv(const char *name)
 {
-int i = 0;
-while (environ[i])
-{
-if (strncmp(environ[i], name, strlen(name)) == 0)
-{
-return ((strstr(environ[i], "=")) + 1);
-}
-i++;
-}
-return (NULL);
+    
+    int i = 0;
+        while (environ[i])
+        {
+            if (strncmp(environ[i], name, strlen(name)) == 0)
+                return ((strstr(environ[i], "=")) + 1);
+            i++;
+        }
+
+        return (NULL);
 }

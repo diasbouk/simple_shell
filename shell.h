@@ -10,9 +10,13 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
+
+
 #define BUFFER_SIZE 0
 #define BUFF_NUM 0
 #define DELIM " \t\n"
+
+
 extern char **environ;
 char **command_spiltter(char *command);
 char *_strcpy(char *dest, char *src);
@@ -24,5 +28,6 @@ void _free_t(char **arr);
 char *get_line(void);
 int _exec_it(char **command, char **envp);
 void print_env(char **envi);
+
 int is_number(char *s);
 #endif

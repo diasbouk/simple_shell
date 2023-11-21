@@ -18,6 +18,7 @@ char *handle_command(char *cmd)
         {
             full_cmd = NULL;
             full_cmd = realloc(full_cmd, sizeof(char) * (strlen(token) + strlen(cmd) + 2));
+            
             strcpy(full_cmd, token);
             strcat(full_cmd, "/");
             strcat(full_cmd, cmd);
