@@ -53,6 +53,8 @@ buffer[num_of_chars - 1] = '\0';
             status = atoi(new_args[1]);
             free(buffer);
             _free_t(new_args);
+            if (status < 0)
+            exit(2);
             exit(status);
         
         }
