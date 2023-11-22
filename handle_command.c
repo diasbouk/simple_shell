@@ -24,7 +24,11 @@ char *handle_command(char *cmd)
             strcat(full_cmd, cmd);
 
             if (stat(full_cmd, &st) == 0)
-                return (full_cmd);
+               {
+                cmd = _strcpy(cmd, full_cmd);
+                free(full_cmd);
+                return (cmd);
+               }
 
 
             token = strtok(NULL, ":");

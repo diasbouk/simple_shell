@@ -9,6 +9,7 @@
 */
 int main(int argc, char **argv, char **envp)
 {
+    struct stat st;
 char *buffer = NULL, **new_args = NULL;
 size_t buffer_size;
 int num_of_chars, status = 0;
@@ -39,6 +40,13 @@ buffer[num_of_chars - 1] = '\0';
 
 
     new_args = command_spiltter(buffer);
+
+    if (new_args == NULL)
+    {
+        free(buffer);
+        return (0);
+    }
+
     if (strcmp(new_args[0], "exit") == 0)
     {
         if (new_args[1])
@@ -60,11 +68,17 @@ buffer[num_of_chars - 1] = '\0';
         }
     }
     
-    if (new_args == NULL)
-    {
-        free(buffer);
-        return (0);
-    }
+        if (stat(new_args[0], &st) != 0)
+        {
+
+            new_args[0] = handle_command(new_args[0]);
+            if (new_args[0] == NULL)
+            {
+                _free_t(new_args);
+                continue;
+            }
+        }
+    
         status = _exec_it(new_args, envp);
 
 }
